@@ -8,7 +8,7 @@ use serenity::prelude::*;
 #[derive(Parser, Debug)]
 #[clap(version, about, long_about = None)]
 pub struct Args {
-    /// Discord token
+    /// Discord bot auth token
     #[clap(short, long)]
     pub token: String,
 }
