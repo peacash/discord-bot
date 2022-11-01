@@ -1,10 +1,17 @@
 mod commands;
+use clap::Parser;
 use serenity::async_trait;
 use serenity::model::application::command::Command;
 use serenity::model::application::interaction::{Interaction, InteractionResponseType};
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
-use std::env;
+#[derive(Parser, Debug)]
+#[clap(version, about, long_about = None)]
+pub struct Args {
+    /// Discord token
+    #[clap(short, long)]
+    pub token: String,
+}
 struct Handler;
 #[async_trait]
 impl EventHandler for Handler {
@@ -42,13 +49,8 @@ impl EventHandler for Handler {
 }
 #[tokio::main]
 async fn main() {
-    // Configure the client with your Discord bot token in the environment.
-    let token = env::var("TOKEN").expect("Expected a token in the environment");
-    // Build our client.
-    let mut client = Client::builder(token, GatewayIntents::empty())
-        .event_handler(Handler)
-        .await
-        .expect("Error creating client");
+    let args = Args::parse();
+    let mut client = Client::builder(args.token, GatewayIntents::empty()).event_handler(Handler).await.expect("Error creating client");
     // Finally, start a single shard, and start listening to events.
     //
     // Shards will automatically attempt to reconnect, and will perform
