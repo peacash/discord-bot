@@ -863,18 +863,18 @@ dependencies = [
 
 [[package]]
 name = "pea-amount"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e036e3e1b4f1da4a81114d561b3e7ed242cce3ab3696a45c4d729eafc32c595d"
+checksum = "b5600f518f346d509657b0a5587f33c9abfa991d493b91bbb3f572f1ed4b4b15"
 dependencies = [
  "pea-core",
 ]
 
 [[package]]
 name = "pea-api"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8a0362b14a50f7e32feb21bc6e9e3eec42652abbf2751bb31ce42dd9403297c"
+checksum = "cf16741d9d670d747eec8edaa25d590605ff76249fb2eb3c177e239f65674b3a"
 dependencies = [
  "bincode",
  "hex",
@@ -886,9 +886,9 @@ dependencies = [
 
 [[package]]
 name = "pea-core"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21db306fb304ae445b868571843f62802b29bbd1339f323747b59ae0de05575c"
+checksum = "cacae46cf7fb5779bc944cd3b7f0b801d434c1ddae08e72f43ac59385b84293a"
 dependencies = [
  "bincode",
  "blake3",

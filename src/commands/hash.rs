@@ -23,7 +23,7 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
                         e.color(Color::from_rgb(47, 49, 54)).field(
                             format!("Hash - {}", height),
                             format!(
-                                r"```ini
+                                "```ini
 [{}]
 ```",
                                 hash

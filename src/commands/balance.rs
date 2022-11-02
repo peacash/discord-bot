@@ -27,7 +27,7 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
                             (
                                 "Address",
                                 format!(
-                                    r"```fix
+                                    "```fix
 {}
 ```",
                                     address
@@ -37,7 +37,7 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
                             (
                                 "Balance",
                                 format!(
-                                    r"```diff
+                                    "```diff
 + {}
 ```",
                                     balance
@@ -47,7 +47,7 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
                             (
                                 "Staked",
                                 format!(
-                                    r"```diff
+                                    "```diff
 - {}
 ```",
                                     balance_staked

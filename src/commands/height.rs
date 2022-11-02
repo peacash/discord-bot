@@ -16,7 +16,7 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
             response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
                 message.embed(|e| {
                     e.color(Color::from_rgb(47, 49, 54)).title("Height").description(format!(
-                        r"```fix
+                        "```fix
 {}
 ```",
                         height
