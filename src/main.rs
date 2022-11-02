@@ -60,7 +60,7 @@ impl EventHandler for Handler {
                 }
             };
             ctx.set_activity(activity).await;
-            thread::sleep(Duration::from_secs(10));
+            thread::sleep(Duration::from_secs(30));
         }
     }
 }
