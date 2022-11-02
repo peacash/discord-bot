@@ -8,24 +8,28 @@ use serenity::model::gateway::Activity;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 use std::time::Duration;
-const HTTP_API: &str = "http://localhost:8080";
 #[derive(Parser, Debug)]
 #[clap(version, about, long_about = None)]
 pub struct Args {
     /// Discord bot auth token
     #[clap(short, long)]
     pub token: String,
+    /// API Endpoint
+    #[clap(long, value_parser, default_value = "http://[::]:9332")]
+    pub http_api: String,
 }
-struct Handler;
+pub struct Bot {
+    pub http_api: String,
+}
 #[async_trait]
-impl EventHandler for Handler {
+impl EventHandler for Bot {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         if let Interaction::ApplicationCommand(command) = interaction {
             match command.data.name.as_str() {
-                "height" => commands::height::run(&ctx, &command).await,
-                "hash" => commands::hash::run(&ctx, &command).await,
-                "block" => commands::block::run(&ctx, &command).await,
-                "balance" => commands::balance::run(&ctx, &command).await,
+                "height" => commands::height::run(self, &ctx, &command).await,
+                "hash" => commands::hash::run(self, &ctx, &command).await,
+                "block" => commands::block::run(self, &ctx, &command).await,
+                "balance" => commands::balance::run(self, &ctx, &command).await,
                 _ => {}
             };
         }
@@ -46,7 +50,7 @@ impl EventHandler for Handler {
             i += 1;
             let activity = match i {
                 1 => {
-                    let height = match get::height(HTTP_API).await {
+                    let height = match get::height(&self.http_api).await {
                         Ok(height) => height.to_string(),
                         Err(_) => "Unknown".to_string(),
                     };
@@ -66,7 +70,10 @@ impl EventHandler for Handler {
 #[tokio::main]
 async fn main() {
     let args = Args::parse();
-    let mut client = Client::builder(args.token, GatewayIntents::empty()).event_handler(Handler).await.expect("Error creating client");
+    let mut client = Client::builder(args.token, GatewayIntents::empty())
+        .event_handler(Bot { http_api: args.http_api })
+        .await
+        .expect("Error creating client");
     // Finally, start a single shard, and start listening to events.
     //
     // Shards will automatically attempt to reconnect, and will perform

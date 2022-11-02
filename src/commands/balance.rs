@@ -1,3 +1,4 @@
+use crate::Bot;
 use pea_api::get;
 use pea_core::constants::DECIMAL_PRECISION;
 use serenity::{
@@ -9,14 +10,13 @@ use serenity::{
     prelude::Context,
     utils::Color,
 };
-const HTTP_API: &str = "http://localhost:8080";
-pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
+pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     if let CommandDataOptionValue::String(address) = command.data.options.get(0).expect("Expected address option").resolved.as_ref().expect("Expected address object") {
-        let balance = match get::balance(HTTP_API, address).await {
+        let balance = match get::balance(&bot.http_api, address).await {
             Ok(a) => (a as f64 / DECIMAL_PRECISION as f64).to_string(),
             Err(_) => "Unknown".to_string(),
         };
-        let balance_staked = match get::balance_staked(HTTP_API, address).await {
+        let balance_staked = match get::balance_staked(&bot.http_api, address).await {
             Ok(a) => (a as f64 / DECIMAL_PRECISION as f64).to_string(),
             Err(_) => "Unknown".to_string(),
         };

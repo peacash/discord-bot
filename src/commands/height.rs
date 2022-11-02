@@ -1,3 +1,4 @@
+use crate::Bot;
 use pea_api::get;
 use serenity::{
     builder::CreateApplicationCommand,
@@ -5,9 +6,8 @@ use serenity::{
     prelude::Context,
     utils::Color,
 };
-const HTTP_API: &str = "http://localhost:8080";
-pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
-    let height = match get::height(HTTP_API).await {
+pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
+    let height = match get::height(&bot.http_api).await {
         Ok(a) => a.to_string(),
         Err(_) => "Unknown".to_string(),
     };

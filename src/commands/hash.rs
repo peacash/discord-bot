@@ -1,3 +1,4 @@
+use crate::Bot;
 use pea_api::get;
 use serenity::{
     builder::CreateApplicationCommand,
@@ -8,11 +9,10 @@ use serenity::{
     prelude::Context,
     utils::Color,
 };
-const HTTP_API: &str = "http://localhost:8080";
-pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
+pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     let option = command.data.options.get(0).expect("Expected int option").resolved.as_ref().expect("Expected int object");
     if let CommandDataOptionValue::Integer(height) = option {
-        let hash = match get::hash(HTTP_API, &(*height as usize)).await {
+        let hash = match get::hash(&bot.http_api, &(*height as usize)).await {
             Ok(hash) => hash,
             Err(err) => err.to_string(),
         };
