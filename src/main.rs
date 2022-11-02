@@ -7,7 +7,6 @@ use serenity::model::application::interaction::Interaction;
 use serenity::model::gateway::Activity;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
-use std::thread;
 use std::time::Duration;
 const HTTP_API: &str = "http://localhost:8080";
 #[derive(Parser, Debug)]
@@ -60,7 +59,7 @@ impl EventHandler for Handler {
                 }
             };
             ctx.set_activity(activity).await;
-            tokio::time::sleep(Duration::from_secs(10)).await;
+            tokio::time::sleep(Duration::from_millis(2500)).await;
         }
     }
 }
