@@ -123,6 +123,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "pea-api",
+ "pea-core",
  "serenity",
  "tokio",
 ]
