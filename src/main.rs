@@ -26,6 +26,7 @@ impl EventHandler for Handler {
                 "height" => commands::height::run(&command.data.options).await,
                 "hash" => commands::hash::run(&command.data.options).await,
                 "block" => commands::block::run(&command.data.options).await,
+                "balance" => commands::balance::run(&command.data.options).await,
                 _ => "not implemented :(".to_string(),
             };
             if let Err(why) = command
@@ -47,6 +48,7 @@ impl EventHandler for Handler {
                 .create_application_command(|command| commands::height::register(command))
                 .create_application_command(|command| commands::hash::register(command))
                 .create_application_command(|command| commands::block::register(command))
+                .create_application_command(|command| commands::balance::register(command))
         })
         .await
         .unwrap();
@@ -68,7 +70,7 @@ impl EventHandler for Handler {
                 }
             };
             ctx.set_activity(activity).await;
-            thread::sleep(Duration::from_secs(3));
+            thread::sleep(Duration::from_secs(10));
         }
     }
 }
