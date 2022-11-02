@@ -23,28 +23,36 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
             .create_interaction_response(&ctx.http, |response| {
                 response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
                     message.embed(|e| {
-                        e.color(Color::from_rgb(47, 49, 54)).title("Address").description(format!("{}", address)).fields(vec![
-                            (
-                                "Balance",
-                                format!(
-                                    r"```diff
+                        e.color(Color::from_rgb(47, 49, 54))
+                            .title("Address")
+                            .description(format!(
+                                "```fix
+{}
+```",
+                                address
+                            ))
+                            .fields(vec![
+                                (
+                                    "Balance",
+                                    format!(
+                                        r"```diff
 + {}
 ```",
-                                    balance
+                                        balance
+                                    ),
+                                    true,
                                 ),
-                                true,
-                            ),
-                            (
-                                "Staked",
-                                format!(
-                                    r"```diff
+                                (
+                                    "Staked",
+                                    format!(
+                                        r"```diff
 - {}
 ```",
-                                    balance_staked
+                                        balance_staked
+                                    ),
+                                    true,
                                 ),
-                                true,
-                            ),
-                        ])
+                            ])
                     })
                 })
             })
