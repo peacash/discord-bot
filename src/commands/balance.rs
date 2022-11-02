@@ -22,26 +22,30 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
         if let Err(why) = command
             .create_interaction_response(&ctx.http, |response| {
                 response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
-                    message
-                        .content(format!(
-                            r"```
-Balance: {}
-Staked: {}
+                    message.embed(|e| {
+                        e.color(Color::from_rgb(47, 49, 54)).title("Address").description(format!("{}", address)).fields(vec![
+                            (
+                                "Balance",
+                                format!(
+                                    r"```diff
++ {}
 ```",
-                            balance, balance_staked
-                        ))
-                        .embed(|e| {
-                            e.color(Color::from_rgb(47, 49, 54))
-                                .title("This is a title")
-                                .description("This is a description")
-                                .image("attachment://ferris_eyes.png")
-                                .fields(vec![
-                                    ("This is the first field", "This is a field body", true),
-                                    ("This is the second field", "Both fields are inline", true),
-                                ])
-                                .field("This is the third field", "This is not an inline field", false)
-                                .footer(|f| f.text("This is a footer"))
-                        })
+                                    balance
+                                ),
+                                true,
+                            ),
+                            (
+                                "Staked",
+                                format!(
+                                    r"```diff
+- {}
+```",
+                                    balance_staked
+                                ),
+                                true,
+                            ),
+                        ])
+                    })
                 })
             })
             .await

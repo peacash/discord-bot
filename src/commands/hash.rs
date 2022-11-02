@@ -18,9 +18,20 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
         };
         if let Err(why) = command
             .create_interaction_response(&ctx.http, |response| {
-                response
-                    .kind(InteractionResponseType::ChannelMessageWithSource)
-                    .interaction_response_data(|message| message.embed(|e| e.color(Color::from_rgb(47, 49, 54)).field(format!("Hash - {}", height), format!(r"```{}```", hash), false)))
+                response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
+                    message.embed(|e| {
+                        e.color(Color::from_rgb(47, 49, 54)).field(
+                            format!("Hash - {}", height),
+                            format!(
+                                r"```ini
+[{}]
+```",
+                                hash
+                            ),
+                            false,
+                        )
+                    })
+                })
             })
             .await
         {
