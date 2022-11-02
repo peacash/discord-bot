@@ -4,6 +4,7 @@ use serenity::{
     model::{
         application::interaction::{application_command::ApplicationCommandInteraction, application_command::CommandDataOptionValue, InteractionResponseType},
         prelude::command::CommandOptionType,
+        Timestamp,
     },
     prelude::Context,
     utils::Color,
@@ -26,76 +27,78 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
             .create_interaction_response(&ctx.http, |response| {
                 response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
                     message.embed(|e| {
-                        e.color(Color::from_rgb(47, 49, 54)).fields(vec![
-                            (
-                                "Previous Hash",
-                                format!(
-                                    "```ini
+                        e.color(Color::from_rgb(47, 49, 54))
+                            .timestamp(Timestamp::from_unix_timestamp(block.timestamp.into()).unwrap())
+                            .fields(vec![
+                                (
+                                    "Previous Hash",
+                                    format!(
+                                        "```ini
 [{}]
 ```",
-                                    block.previous_hash
+                                        block.previous_hash
+                                    ),
+                                    false,
                                 ),
-                                false,
-                            ),
-                            (
-                                "Forger",
-                                format!(
-                                    "```fix
+                                (
+                                    "Forger",
+                                    format!(
+                                        "```fix
 {}
 ```",
-                                    block.public_key
+                                        block.public_key
+                                    ),
+                                    true,
                                 ),
-                                true,
-                            ),
-                            (
-                                "Signature",
-                                format!(
-                                    "```json
+                                (
+                                    "Signature",
+                                    format!(
+                                        "```json
 \"{}\"
 ```",
-                                    block.signature
+                                        block.signature
+                                    ),
+                                    false,
                                 ),
-                                false,
-                            ),
-                            (
-                                "Transactions",
-                                if block.transactions.is_empty() {
-                                    format!(
-                                        "```diff
+                                (
+                                    "Transactions",
+                                    if block.transactions.is_empty() {
+                                        format!(
+                                            "```diff
 - {}
 ```",
-                                        block.transactions.len()
-                                    )
-                                } else {
-                                    format!(
-                                        "```diff
+                                            block.transactions.len()
+                                        )
+                                    } else {
+                                        format!(
+                                            "```diff
 + {}
 ```",
-                                        block.transactions.len()
-                                    )
-                                },
-                                true,
-                            ),
-                            (
-                                "Stakes",
-                                if block.stakes.is_empty() {
-                                    format!(
-                                        "```diff
+                                            block.transactions.len()
+                                        )
+                                    },
+                                    true,
+                                ),
+                                (
+                                    "Stakes",
+                                    if block.stakes.is_empty() {
+                                        format!(
+                                            "```diff
 - {}
 ```",
-                                        block.stakes.len()
-                                    )
-                                } else {
-                                    format!(
-                                        "```diff
+                                            block.stakes.len()
+                                        )
+                                    } else {
+                                        format!(
+                                            "```diff
 + {}
 ```",
-                                        block.stakes.len()
-                                    )
-                                },
-                                true,
-                            ),
-                        ])
+                                            block.stakes.len()
+                                        )
+                                    },
+                                    true,
+                                ),
+                            ])
                     })
                 })
             })
