@@ -12,19 +12,14 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
     let option = command.data.options.get(0).expect("Expected int option").resolved.as_ref().expect("Expected int object");
     if let CommandDataOptionValue::Integer(height) = option {
         let hash = match get::hash(HTTP_API, &(*height as usize)).await {
-            Ok(hash) => format!(
-                r"```
-{}
-```",
-                hash
-            ),
+            Ok(hash) => hash,
             Err(err) => err.to_string(),
         };
         if let Err(why) = command
             .create_interaction_response(&ctx.http, |response| {
                 response
                     .kind(InteractionResponseType::ChannelMessageWithSource)
-                    .interaction_response_data(|message| message.embed(|e| e.title(format!("Hash {}", height)).description(hash)))
+                    .interaction_response_data(|message| message.embed(|e| e.field(format!("Hash - {}", height), format!(r"```{}```", hash), false)))
             })
             .await
         {
