@@ -23,36 +23,38 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
             .create_interaction_response(&ctx.http, |response| {
                 response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
                     message.embed(|e| {
-                        e.color(Color::from_rgb(47, 49, 54))
-                            .title("Address")
-                            .description(format!(
-                                "```fix
+                        e.color(Color::from_rgb(47, 49, 54)).fields(vec![
+                            (
+                                "Address",
+                                format!(
+                                    r"```fix
 {}
 ```",
-                                address
-                            ))
-                            .fields(vec![
-                                (
-                                    "Balance",
-                                    format!(
-                                        r"```diff
+                                    address
+                                ),
+                                false,
+                            ),
+                            (
+                                "Balance",
+                                format!(
+                                    r"```diff
 + {}
 ```",
-                                        balance
-                                    ),
-                                    true,
+                                    balance
                                 ),
-                                (
-                                    "Staked",
-                                    format!(
-                                        r"```diff
+                                true,
+                            ),
+                            (
+                                "Staked",
+                                format!(
+                                    r"```diff
 - {}
 ```",
-                                        balance_staked
-                                    ),
-                                    true,
+                                    balance_staked
                                 ),
-                            ])
+                                true,
+                            ),
+                        ])
                     })
                 })
             })
