@@ -3,7 +3,7 @@ use clap::Parser;
 use pea_api::get;
 use serenity::async_trait;
 use serenity::model::application::command::Command;
-use serenity::model::application::interaction::{Interaction, InteractionResponseType};
+use serenity::model::application::interaction::Interaction;
 use serenity::model::gateway::Activity;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
@@ -22,23 +22,13 @@ struct Handler;
 impl EventHandler for Handler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         if let Interaction::ApplicationCommand(command) = interaction {
-            let content = match command.data.name.as_str() {
-                "height" => commands::height::run(&command.data.options).await,
-                "hash" => commands::hash::run(&command.data.options).await,
-                "block" => commands::block::run(&command.data.options).await,
-                "balance" => commands::balance::run(&command.data.options).await,
-                _ => "not implemented :(".to_string(),
+            match command.data.name.as_str() {
+                "height" => commands::height::run(&ctx, &command).await,
+                "hash" => commands::hash::run(&ctx, &command).await,
+                "block" => commands::block::run(&ctx, &command).await,
+                "balance" => commands::balance::run(&ctx, &command).await,
+                _ => {}
             };
-            if let Err(why) = command
-                .create_interaction_response(&ctx.http, |response| {
-                    response
-                        .kind(InteractionResponseType::ChannelMessageWithSource)
-                        .interaction_response_data(|message| message.content(content))
-                })
-                .await
-            {
-                println!("Cannot respond to slash command: {}", why);
-            }
         }
     }
     async fn ready(&self, ctx: Context, ready: Ready) {
