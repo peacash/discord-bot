@@ -3,6 +3,7 @@ use serenity::{
     builder::CreateApplicationCommand,
     model::application::interaction::{application_command::ApplicationCommandInteraction, InteractionResponseType},
     prelude::Context,
+    utils::Color,
 };
 const HTTP_API: &str = "http://localhost:8080";
 pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
@@ -12,9 +13,16 @@ pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
     };
     if let Err(why) = command
         .create_interaction_response(&ctx.http, |response| {
-            response
-                .kind(InteractionResponseType::ChannelMessageWithSource)
-                .interaction_response_data(|message| message.embed(|e| e.title("Current height").description(height)))
+            response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
+                message.embed(|e| {
+                    e.color(Color::from_rgb(47, 49, 54)).title("Height").description(format!(
+                        r"```fix
+{}
+```",
+                        height
+                    ))
+                })
+            })
         })
         .await
     {

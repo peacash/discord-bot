@@ -6,6 +6,7 @@ use serenity::{
         prelude::command::CommandOptionType,
     },
     prelude::Context,
+    utils::Color,
 };
 const HTTP_API: &str = "http://localhost:8080";
 pub async fn run(ctx: &Context, command: &ApplicationCommandInteraction) {
@@ -30,7 +31,8 @@ Staked: {}
                             balance, balance_staked
                         ))
                         .embed(|e| {
-                            e.title("This is a title")
+                            e.color(Color::from_rgb(47, 49, 54))
+                                .title("This is a title")
                                 .description("This is a description")
                                 .image("attachment://ferris_eyes.png")
                                 .fields(vec![
