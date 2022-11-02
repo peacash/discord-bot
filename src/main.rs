@@ -1,10 +1,15 @@
 mod commands;
 use clap::Parser;
+use pea_api::get;
 use serenity::async_trait;
 use serenity::model::application::command::Command;
 use serenity::model::application::interaction::{Interaction, InteractionResponseType};
+use serenity::model::gateway::Activity;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
+use std::thread;
+use std::time::Duration;
+const HTTP_API: &str = "http://localhost:8080";
 #[derive(Parser, Debug)]
 #[clap(version, about, long_about = None)]
 pub struct Args {
@@ -45,6 +50,26 @@ impl EventHandler for Handler {
         })
         .await
         .unwrap();
+        let mut i = 0;
+        loop {
+            i += 1;
+            let activity = match i {
+                1 => {
+                    let height = match get::height(HTTP_API).await {
+                        Ok(height) => height.to_string(),
+                        Err(_) => "Unknown".to_string(),
+                    };
+                    Activity::playing(format!("{} blocks", height))
+                }
+                2 => Activity::playing("https://pea.cash"),
+                _ => {
+                    i = 0;
+                    Activity::playing("github.com/peacash")
+                }
+            };
+            ctx.set_activity(activity).await;
+            thread::sleep(Duration::from_secs(3));
+        }
     }
 }
 #[tokio::main]
