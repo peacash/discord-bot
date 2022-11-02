@@ -59,7 +59,7 @@ impl EventHandler for Handler {
                 }
             };
             ctx.set_activity(activity).await;
-            tokio::time::sleep(Duration::from_millis(2500)).await;
+            tokio::time::sleep(Duration::from_secs(3)).await;
         }
     }
 }
