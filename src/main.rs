@@ -15,7 +15,7 @@ pub struct Args {
     #[clap(short, long)]
     pub token: String,
     /// API Endpoint
-    #[clap(long, value_parser, default_value = "http://[::]:9332")]
+    #[clap(long, value_parser, default_value = "http://localhost:9332")]
     pub http_api: String,
 }
 pub struct Bot {
