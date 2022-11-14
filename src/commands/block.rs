@@ -15,6 +15,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
         let block = match get::block(&bot.http_api, hash).await {
             Ok(a) => a,
             Err(_) => get::Block {
+                hash: "".to_string(),
                 previous_hash: "".to_string(),
                 timestamp: 0,
                 public_key: "".to_string(),

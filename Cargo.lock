@@ -852,31 +852,44 @@ dependencies = [
 ]
 
 [[package]]
-name = "pea-amount"
-version = "0.1.1"
+name = "pea-address"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5600f518f346d509657b0a5587f33c9abfa991d493b91bbb3f572f1ed4b4b15"
+checksum = "b9faa3fd2e70090894a8626bd486cd3ca2d8b9dbaeb1bb10a39f89e5b87835a6"
+dependencies = [
+ "hex",
+ "pea-core",
+]
+
+[[package]]
+name = "pea-amount"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d62126db2c2173b8f709c1a7e26e84c95f693e21b1b4a55a9c7ef9401a5a69f2"
 dependencies = [
  "pea-core",
 ]
 
 [[package]]
 name = "pea-api"
-version = "0.1.1"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf16741d9d670d747eec8edaa25d590605ff76249fb2eb3c177e239f65674b3a"
+checksum = "65d3e15c49b9a4b0eee42af39ee80ad7f656f76ff1aa09bc434eecd76ce584cb"
 dependencies = [
  "bincode",
  "hex",
  "pea-amount",
  "pea-core",
+ "pea-stake",
+ "pea-transaction",
  "reqwest",
  "serde",
+ "tokio",
 ]
 
 [[package]]
 name = "pea-bot"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "clap",
  "pea-api",
@@ -887,17 +900,54 @@ dependencies = [
 
 [[package]]
 name = "pea-core"
-version = "0.1.1"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cacae46cf7fb5779bc944cd3b7f0b801d434c1ddae08e72f43ac59385b84293a"
+checksum = "d6e03cecf164ad1e75a7368bc0c5e555da65b5f7931b59ee49a7dfb5be02887b"
 dependencies = [
  "bincode",
  "blake3",
- "ed25519",
- "ed25519-dalek",
  "hex",
  "merkle-cbt",
  "rand 0.7.3",
+ "serde",
+ "serde-big-array",
+]
+
+[[package]]
+name = "pea-key"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b72e2a60507f6399ae6336b3744cd2497498b8cc3070a3205e82683fae2a9b29"
+dependencies = [
+ "ed25519",
+ "ed25519-dalek",
+ "pea-address",
+ "pea-core",
+ "rand 0.7.3",
+]
+
+[[package]]
+name = "pea-stake"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "012dcf707fc16206cb47167d6d4744e108622a4d9e7b6dcdf449d88fec4d1e68"
+dependencies = [
+ "bincode",
+ "pea-core",
+ "pea-key",
+ "serde",
+ "serde-big-array",
+]
+
+[[package]]
+name = "pea-transaction"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d421f64ae558d4fefb0126858c8984af613af3ce79bfbc443d0a440a9b29c2fb"
+dependencies = [
+ "bincode",
+ "pea-core",
+ "pea-key",
  "serde",
  "serde-big-array",
 ]

@@ -1,6 +1,6 @@
 [package]
 name = "pea-bot"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 description = "エンドウ"
@@ -11,6 +11,6 @@ repository = "https://github.com/peacash/bot"
 [dependencies]
 serenity = { version = "0.11", default-features = false, features = ["client", "gateway", "rustls_backend", "model"] }
 tokio = { version = "1.21.2", features = ["full"] }
-pea-api = "0.1.1"
-pea-core = "0.1.1"
+pea-api = "0.2.1"
+pea-core = "0.2.1"
 clap = { version = "3.2.6", features = ["derive"] }
