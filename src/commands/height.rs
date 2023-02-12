@@ -1,11 +1,10 @@
 use crate::Bot;
 use pea_api::get;
-use serenity::{
-    builder::CreateApplicationCommand,
-    model::application::interaction::{application_command::ApplicationCommandInteraction, InteractionResponseType},
-    prelude::Context,
-    utils::Color,
-};
+use serenity::builder::CreateApplicationCommand;
+use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
+use serenity::model::application::interaction::InteractionResponseType;
+use serenity::prelude::Context;
+use serenity::utils::Color;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     let height = match get::height(&bot.http_api).await {
         Ok(a) => a.to_string(),
@@ -13,16 +12,18 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
     };
     if let Err(why) = command
         .create_interaction_response(&ctx.http, |response| {
-            response.kind(InteractionResponseType::ChannelMessageWithSource).interaction_response_data(|message| {
-                message.embed(|e| {
-                    e.color(Color::from_rgb(47, 49, 54)).title("Height").description(format!(
-                        "```fix
+            response
+                .kind(InteractionResponseType::ChannelMessageWithSource)
+                .interaction_response_data(|message| {
+                    message.embed(|e| {
+                        e.color(Color::from_rgb(47, 49, 54)).title("Height").description(format!(
+                            "```fix
 {}
 ```",
-                        height
-                    ))
+                            height
+                        ))
+                    })
                 })
-            })
         })
         .await
     {
