@@ -8,7 +8,7 @@ use serenity::Client;
 #[tokio::main]
 async fn main() {
     let mut args = Args::parse();
-    pea_logger::init(args.debug);
+    tracing_subscriber::fmt::init();
     if args.dev {
         if args.api == BIND_API {
             args.api = DEV_BIND_API.to_string();
