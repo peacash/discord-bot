@@ -1,4 +1,4 @@
-use crate::Bot;
+use crate::bot::Bot;
 use pea_api::get;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
