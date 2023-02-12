@@ -1,4 +1,5 @@
 use crate::bot::Bot;
+use log::error;
 use pea_api::get;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
@@ -10,7 +11,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
         Ok(a) => a.to_string(),
         Err(_) => "Unknown".to_string(),
     };
-    if let Err(why) = command
+    if let Err(err) = command
         .create_interaction_response(&ctx.http, |response| {
             response
                 .kind(InteractionResponseType::ChannelMessageWithSource)
@@ -27,7 +28,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
         })
         .await
     {
-        println!("Cannot respond to slash command: {}", why);
+        error!("Cannot respond to slash command: {}", err);
     }
 }
 pub fn register(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {

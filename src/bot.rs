@@ -1,4 +1,5 @@
 use crate::commands;
+use log::info;
 use pea_api::get;
 use serenity::async_trait;
 use serenity::model::application::command::Command;
@@ -24,7 +25,7 @@ impl EventHandler for Bot {
         }
     }
     async fn ready(&self, ctx: Context, ready: Ready) {
-        println!("{} is connected!", ready.user.name);
+        info!("{} is connected!", ready.user.name);
         Command::set_global_application_commands(&ctx.http, |commands| {
             commands
                 .create_application_command(|command| commands::height::register(command))

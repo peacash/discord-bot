@@ -5,6 +5,9 @@ use pea_core::*;
 #[derive(Parser, Debug)]
 #[clap(version, about, long_about = None)]
 pub struct Args {
+    /// Log path to source file
+    #[clap(short, long, value_parser, default_value_t = false)]
+    pub debug: bool,
     /// Discord bot auth token
     #[clap(short, long)]
     pub token: String,
