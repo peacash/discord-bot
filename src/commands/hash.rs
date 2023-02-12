@@ -17,7 +17,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
         .as_ref()
         .expect("Expected int object");
     if let CommandDataOptionValue::Integer(height) = option {
-        let hash = match get::hash(&bot.http_api, &(*height as usize)).await {
+        let hash = match get::hash(&bot.api, &(*height as usize)).await {
             Ok(hash) => hash,
             Err(err) => err.to_string(),
         };

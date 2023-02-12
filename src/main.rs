@@ -1,6 +1,7 @@
 mod commands;
 use clap::Parser;
 use pea_api::get;
+use pea_core::*;
 use serenity::async_trait;
 use serenity::model::application::command::Command;
 use serenity::model::application::interaction::Interaction;
@@ -15,11 +16,14 @@ pub struct Args {
     #[clap(short, long)]
     pub token: String,
     /// API Endpoint
-    #[clap(long, value_parser, default_value = "http://localhost:9332")]
-    pub http_api: String,
+    #[clap(long, value_parser, default_value = BIND_API)]
+    pub api: String,
+    /// Development mode
+    #[clap(long, value_parser, default_value_t = false)]
+    pub dev: bool,
 }
 pub struct Bot {
-    pub http_api: String,
+    pub api: String,
 }
 #[async_trait]
 impl EventHandler for Bot {
@@ -50,7 +54,7 @@ impl EventHandler for Bot {
             i += 1;
             let activity = match i {
                 1 => {
-                    let height = match get::height(&self.http_api).await {
+                    let height = match get::height(&self.api).await {
                         Ok(height) => height.to_string(),
                         Err(_) => "Unknown".to_string(),
                     };
@@ -69,9 +73,14 @@ impl EventHandler for Bot {
 }
 #[tokio::main]
 async fn main() {
-    let args = Args::parse();
+    let mut args = Args::parse();
+    if args.dev {
+        if args.api == BIND_API {
+            args.api = DEV_BIND_API.to_string();
+        }
+    }
     let mut client = Client::builder(args.token, GatewayIntents::empty())
-        .event_handler(Bot { http_api: args.http_api })
+        .event_handler(Bot { api: args.api })
         .await
         .expect("Error creating client");
     // Finally, start a single shard, and start listening to events.

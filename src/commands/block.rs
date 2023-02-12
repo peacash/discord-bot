@@ -18,14 +18,16 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
         .as_ref()
         .expect("Expected address object")
     {
-        let block = match get::block(&bot.http_api, hash).await {
+        let block = match get::block(&bot.api, hash).await {
             Ok(a) => a,
-            Err(_) => get::Block {
+            Err(_) => pea_api::Block {
                 hash: "".to_string(),
                 previous_hash: "".to_string(),
                 timestamp: 0,
-                public_key: "".to_string(),
+                address: "".to_string(),
                 signature: "".to_string(),
+                pi: "".to_string(),
+                beta: "".to_string(),
                 transactions: vec![],
                 stakes: vec![],
             },
@@ -55,7 +57,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                                             "```fix
 {}
 ```",
-                                            block.public_key
+                                            block.address
                                         ),
                                         true,
                                     ),

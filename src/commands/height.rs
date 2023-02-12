@@ -6,7 +6,7 @@ use serenity::model::application::interaction::InteractionResponseType;
 use serenity::prelude::Context;
 use serenity::utils::Color;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
-    let height = match get::height(&bot.http_api).await {
+    let height = match get::height(&bot.api).await {
         Ok(a) => a.to_string(),
         Err(_) => "Unknown".to_string(),
     };

@@ -1,6 +1,5 @@
 use crate::Bot;
 use pea_api::get;
-use pea_core::constants::DECIMAL_PRECISION;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::application_command::CommandDataOptionValue;
@@ -18,12 +17,12 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
         .as_ref()
         .expect("Expected address object")
     {
-        let balance = match get::balance(&bot.http_api, address).await {
-            Ok(a) => (a as f64 / DECIMAL_PRECISION as f64).to_string(),
+        let balance = match get::balance(&bot.api, address).await {
+            Ok(a) => a,
             Err(_) => "Unknown".to_string(),
         };
-        let balance_staked = match get::balance_staked(&bot.http_api, address).await {
-            Ok(a) => (a as f64 / DECIMAL_PRECISION as f64).to_string(),
+        let balance_staked = match get::staked(&bot.api, address).await {
+            Ok(a) => a,
             Err(_) => "Unknown".to_string(),
         };
         if let Err(why) = command
