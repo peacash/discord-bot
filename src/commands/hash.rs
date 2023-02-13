@@ -1,5 +1,6 @@
 use crate::bot::Bot;
 use crate::util;
+use crate::EMBED_COLOR;
 use pea_api::get;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
@@ -7,7 +8,6 @@ use serenity::model::application::interaction::application_command::CommandDataO
 use serenity::model::application::interaction::InteractionResponseType;
 use serenity::model::prelude::command::CommandOptionType;
 use serenity::prelude::Context;
-use serenity::utils::Color;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     let option = command
         .data
@@ -28,11 +28,8 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                     .kind(InteractionResponseType::ChannelMessageWithSource)
                     .interaction_response_data(|message| {
                         message.embed(|e| {
-                            e.color(Color::from_rgb(47, 49, 54)).field(
-                                format!("Hash - {}", height),
-                                util::markdown_code_block("ini", &format!("[{}]", hash)),
-                                false,
-                            )
+                            e.color(EMBED_COLOR)
+                                .field(format!("Hash - {}", height), util::markdown_code_block("ini", &format!("[{}]", hash)), false)
                         })
                     })
             })
