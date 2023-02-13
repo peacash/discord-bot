@@ -20,6 +20,8 @@ impl EventHandler for Bot {
                 "hash" => commands::hash::run(self, &ctx, &command).await,
                 "block" => commands::block::run(self, &ctx, &command).await,
                 "balance" => commands::balance::run(self, &ctx, &command).await,
+                "transaction" => commands::transaction::run(self, &ctx, &command).await,
+                "stake" => commands::stake::run(self, &ctx, &command).await,
                 _ => {}
             };
         }
@@ -32,6 +34,8 @@ impl EventHandler for Bot {
                 .create_application_command(|command| commands::hash::register(command))
                 .create_application_command(|command| commands::block::register(command))
                 .create_application_command(|command| commands::balance::register(command))
+                .create_application_command(|command| commands::transaction::register(command))
+                .create_application_command(|command| commands::stake::register(command))
         })
         .await
         .unwrap();

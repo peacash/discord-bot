@@ -9,15 +9,7 @@ use serenity::model::application::interaction::InteractionResponseType;
 use serenity::model::prelude::command::CommandOptionType;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
-    let option = command
-        .data
-        .options
-        .get(0)
-        .expect("Expected int option")
-        .resolved
-        .as_ref()
-        .expect("Expected int object");
-    if let CommandDataOptionValue::Integer(height) = option {
+    if let CommandDataOptionValue::Integer(height) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
         let hash = match get::hash(&bot.api, &(*height as usize)).await {
             Ok(hash) => hash,
             Err(err) => err.to_string(),

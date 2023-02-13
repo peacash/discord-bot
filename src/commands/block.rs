@@ -10,15 +10,7 @@ use serenity::model::prelude::command::CommandOptionType;
 use serenity::model::Timestamp;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
-    if let CommandDataOptionValue::String(hash) = command
-        .data
-        .options
-        .get(0)
-        .expect("Expected address option")
-        .resolved
-        .as_ref()
-        .expect("Expected address object")
-    {
+    if let CommandDataOptionValue::String(hash) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
         let block = get::block(&bot.api, hash).await.unwrap();
         command
             .create_interaction_response(&ctx.http, |response| {
