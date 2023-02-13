@@ -1,5 +1,6 @@
 pub mod bot;
 pub mod commands;
+pub mod util;
 use clap::Parser;
 use pea_core::*;
 #[derive(Parser, Debug)]

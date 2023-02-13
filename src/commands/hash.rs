@@ -1,5 +1,5 @@
 use crate::bot::Bot;
-use log::error;
+use crate::util;
 use pea_api::get;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
@@ -22,7 +22,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
             Ok(hash) => hash,
             Err(err) => err.to_string(),
         };
-        if let Err(err) = command
+        command
             .create_interaction_response(&ctx.http, |response| {
                 response
                     .kind(InteractionResponseType::ChannelMessageWithSource)
@@ -30,21 +30,14 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                         message.embed(|e| {
                             e.color(Color::from_rgb(47, 49, 54)).field(
                                 format!("Hash - {}", height),
-                                format!(
-                                    "```ini
-[{}]
-```",
-                                    hash
-                                ),
+                                util::markdown_code_block("ini", &format!("[{}]", hash)),
                                 false,
                             )
                         })
                     })
             })
             .await
-        {
-            error!("Cannot respond to slash command: {}", err);
-        }
+            .unwrap();
     }
 }
 pub fn register(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {

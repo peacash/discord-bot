@@ -1,5 +1,5 @@
 use crate::bot::Bot;
-use log::error;
+use crate::util;
 use pea_api::get;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
@@ -33,7 +33,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                 stakes: vec![],
             },
         };
-        if let Err(err) = command
+        command
             .create_interaction_response(&ctx.http, |response| {
                 response
                     .kind(InteractionResponseType::ChannelMessageWithSource)
@@ -42,72 +42,23 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                             e.color(Color::from_rgb(47, 49, 54))
                                 .timestamp(Timestamp::from_unix_timestamp(block.timestamp.into()).unwrap())
                                 .fields(vec![
-                                    (
-                                        "Previous Hash",
-                                        format!(
-                                            "```ini
-[{}]
-```",
-                                            block.previous_hash
-                                        ),
-                                        false,
-                                    ),
-                                    (
-                                        "Forger",
-                                        format!(
-                                            "```fix
-{}
-```",
-                                            block.address
-                                        ),
-                                        true,
-                                    ),
-                                    (
-                                        "Signature",
-                                        format!(
-                                            "```json
-\"{}\"
-```",
-                                            block.signature
-                                        ),
-                                        false,
-                                    ),
+                                    ("Previous Hash", util::markdown_code_block("ini", &format!("[{}]", block.previous_hash)), false),
+                                    ("Forger", util::markdown_code_block("fix", &block.address), true),
+                                    ("Signature", util::markdown_code_block("json", &format!("\"{}\"", block.signature)), false),
                                     (
                                         "Transactions",
-                                        if block.transactions.is_empty() {
-                                            format!(
-                                                "```diff
-- {}
-```",
-                                                block.transactions.len()
-                                            )
-                                        } else {
-                                            format!(
-                                                "```diff
-+ {}
-```",
-                                                block.transactions.len()
-                                            )
-                                        },
+                                        util::markdown_code_block(
+                                            "diff",
+                                            &format!("{} {}", if block.transactions.is_empty() { "-" } else { "+" }, block.transactions.len()),
+                                        ),
                                         true,
                                     ),
                                     (
                                         "Stakes",
-                                        if block.stakes.is_empty() {
-                                            format!(
-                                                "```diff
-- {}
-```",
-                                                block.stakes.len()
-                                            )
-                                        } else {
-                                            format!(
-                                                "```diff
-+ {}
-```",
-                                                block.stakes.len()
-                                            )
-                                        },
+                                        util::markdown_code_block(
+                                            "diff",
+                                            &format!("{} {}", if block.stakes.is_empty() { "-" } else { "+" }, block.stakes.len()),
+                                        ),
                                         true,
                                     ),
                                 ])
@@ -115,9 +66,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                     })
             })
             .await
-        {
-            error!("Cannot respond to slash command: {}", err);
-        }
+            .unwrap();
     }
 }
 pub fn register(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
