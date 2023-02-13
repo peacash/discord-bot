@@ -19,20 +19,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
         .as_ref()
         .expect("Expected address object")
     {
-        let block = match get::block(&bot.api, hash).await {
-            Ok(a) => a,
-            Err(_) => pea_api::Block {
-                hash: "".to_string(),
-                previous_hash: "".to_string(),
-                timestamp: 0,
-                address: "".to_string(),
-                signature: "".to_string(),
-                pi: "".to_string(),
-                beta: "".to_string(),
-                transactions: vec![],
-                stakes: vec![],
-            },
-        };
+        let block = get::block(&bot.api, hash).await.unwrap();
         command
             .create_interaction_response(&ctx.http, |response| {
                 response
@@ -42,9 +29,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                             e.color(EMBED_COLOR)
                                 .timestamp(Timestamp::from_unix_timestamp(block.timestamp.into()).unwrap())
                                 .fields(vec![
-                                    ("Previous Hash", util::markdown_code_block("ini", &format!("[{}]", block.previous_hash)), false),
-                                    ("Forger", util::markdown_code_block("fix", &block.address), true),
-                                    ("Signature", util::markdown_code_block("json", &format!("\"{}\"", block.signature)), false),
+                                    ("Forger", util::markdown_code_block("fix", &block.address), false),
                                     (
                                         "Transactions",
                                         util::markdown_code_block(
