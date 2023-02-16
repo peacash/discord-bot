@@ -12,7 +12,7 @@ pub struct Args {
     #[clap(short, long)]
     pub token: String,
     /// API Endpoint
-    #[clap(long, value_parser, default_value = BIND_API)]
+    #[clap(long, value_parser, default_value = HTTP_API)]
     pub api: String,
     /// Development mode
     #[clap(long, value_parser, default_value_t = false)]

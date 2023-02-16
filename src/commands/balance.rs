@@ -1,7 +1,6 @@
 use crate::bot::Bot;
 use crate::util;
 use crate::EMBED_COLOR;
-use pea_api::get;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::application_command::CommandDataOptionValue;
@@ -10,8 +9,8 @@ use serenity::model::prelude::command::CommandOptionType;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     if let CommandDataOptionValue::String(address) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
-        let balance = get::balance(&bot.api, address).await.unwrap();
-        let staked = get::staked(&bot.api, address).await.unwrap();
+        let balance: u128 = reqwest::get(format!("{}/balance/{}", bot.api, address)).await.unwrap().json().await.unwrap();
+        let staked: u128 = reqwest::get(format!("{}/staked/{}", bot.api, address)).await.unwrap().json().await.unwrap();
         command
             .create_interaction_response(&ctx.http, |response| {
                 response

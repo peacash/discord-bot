@@ -1,13 +1,12 @@
 use crate::bot::Bot;
 use crate::util;
 use crate::EMBED_COLOR;
-use pea_api::get;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::InteractionResponseType;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
-    let height = get::height(&bot.api).await.unwrap();
+    let height: usize = reqwest::get(format!("{}/height", bot.api)).await.unwrap().json().await.unwrap();
     command
         .create_interaction_response(&ctx.http, |response| {
             response

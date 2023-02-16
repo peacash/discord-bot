@@ -1,6 +1,5 @@
 use crate::commands;
 use log::info;
-use pea_api::get;
 use serenity::async_trait;
 use serenity::model::application::command::Command;
 use serenity::model::application::interaction::Interaction;
@@ -44,8 +43,8 @@ impl EventHandler for Bot {
             i += 1;
             let activity = match i {
                 1 => {
-                    let height = match get::height(&self.api).await {
-                        Ok(height) => height.to_string(),
+                    let height = match reqwest::get(format!("{}/height", self.api)).await {
+                        Ok(res) => res.json::<usize>().await.unwrap().to_string(),
                         Err(_) => "Unknown".to_string(),
                     };
                     Activity::playing(format!("{} blocks", height))

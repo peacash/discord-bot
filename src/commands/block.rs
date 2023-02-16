@@ -1,7 +1,7 @@
 use crate::bot::Bot;
 use crate::util;
 use crate::EMBED_COLOR;
-use pea_api::get;
+use pea_api_core::Block;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::application_command::CommandDataOptionValue;
@@ -11,7 +11,7 @@ use serenity::model::Timestamp;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     if let CommandDataOptionValue::String(hash) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
-        let block = get::block(&bot.api, hash).await.unwrap();
+        let block: Block = reqwest::get(format!("{}/block/{}", bot.api, hash)).await.unwrap().json().await.unwrap();
         command
             .create_interaction_response(&ctx.http, |response| {
                 response
@@ -21,7 +21,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                             e.color(EMBED_COLOR)
                                 .timestamp(Timestamp::from_unix_timestamp(block.timestamp.into()).unwrap())
                                 .fields(vec![
-                                    ("Forger", util::markdown_code_block("fix", &block.address), false),
+                                    ("Forger", util::markdown_code_block("fix", &block.forger_address), false),
                                     (
                                         "Transactions",
                                         util::markdown_code_block(

@@ -1,7 +1,7 @@
 use crate::bot::Bot;
 use crate::util;
 use crate::EMBED_COLOR;
-use pea_api::get;
+use pea_api_core::Stake;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::application_command::CommandDataOptionValue;
@@ -11,7 +11,7 @@ use serenity::model::Timestamp;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     if let CommandDataOptionValue::String(hash) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
-        let stake = get::stake(&bot.api, hash).await.unwrap();
+        let stake: Stake = reqwest::get(format!("{}/stake/{}", bot.api, hash)).await.unwrap().json().await.unwrap();
         command
             .create_interaction_response(&ctx.http, |response| {
                 response
@@ -21,7 +21,7 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                             e.color(EMBED_COLOR)
                                 .timestamp(Timestamp::from_unix_timestamp(stake.timestamp.into()).unwrap())
                                 .fields(vec![
-                                    ("Input", util::markdown_code_block("fix", &stake.address), false),
+                                    ("Input", util::markdown_code_block("fix", &stake.input_address), false),
                                     ("Fee", util::markdown_code_block("diff", &format!("- {}", stake.fee)), true),
                                 ])
                         })
