@@ -2,7 +2,7 @@
 name = "tofuri-bot"
 version = "0.1.0"
 edition = "2021"
-license = "MIT"
+license = "GPL-3.0"
 description = "Tofuri discord bot"
 repository = "https://github.com/tofuri/discord-bot"
 
