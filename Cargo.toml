@@ -1,14 +1,14 @@
 [package]
-name = "pea-bot"
-version = "0.1.1"
+name = "tofuri-bot"
+version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "エンドウ"
-repository = "https://github.com/peacash/discord-bot"
+repository = "https://github.com/tofuri/discord-bot"
 
 [dependencies]
-pea-core = "0.6"
-pea-api-core = "0.1"
+tofuri-core = "0.1"
+tofuri-api-core = "0.1"
 serenity = { version = "0.11", default-features = false, features = ["client", "gateway", "rustls_backend", "model"] }
 tokio = { version = "1.21.2", features = ["full"] }
 clap = { version = "3.2.6", features = ["derive"] }

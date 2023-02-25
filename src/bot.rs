@@ -49,10 +49,10 @@ impl EventHandler for Bot {
                     };
                     Activity::playing(format!("{} blocks", height))
                 }
-                2 => Activity::playing("https://pea.cash"),
+                2 => Activity::playing("https://tofuri.cash"),
                 _ => {
                     i = 0;
-                    Activity::playing("github.com/peacash")
+                    Activity::playing("github.com/tofuri")
                 }
             };
             ctx.set_activity(activity).await;

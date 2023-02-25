@@ -1,7 +1,6 @@
 use crate::bot::Bot;
 use crate::util;
 use crate::EMBED_COLOR;
-use pea_api_core::Stake;
 use serenity::builder::CreateApplicationCommand;
 use serenity::model::application::interaction::application_command::ApplicationCommandInteraction;
 use serenity::model::application::interaction::application_command::CommandDataOptionValue;
@@ -9,6 +8,7 @@ use serenity::model::application::interaction::InteractionResponseType;
 use serenity::model::prelude::command::CommandOptionType;
 use serenity::model::Timestamp;
 use serenity::prelude::Context;
+use tofuri_api_core::Stake;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
     if let CommandDataOptionValue::String(hash) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
         let stake: Stake = reqwest::get(format!("{}/stake/{}", bot.api, hash)).await.unwrap().json().await.unwrap();
