@@ -38,24 +38,12 @@ impl EventHandler for Bot {
         })
         .await
         .unwrap();
-        let mut i = 0;
         loop {
-            i += 1;
-            let activity = match i {
-                1 => {
-                    let height = match reqwest::get(format!("{}/height", self.api)).await {
-                        Ok(res) => res.json::<usize>().await.unwrap().to_string(),
-                        Err(_) => "Unknown".to_string(),
-                    };
-                    Activity::playing(format!("{} blocks", height))
-                }
-                2 => Activity::playing("https://tofuri.cash"),
-                _ => {
-                    i = 0;
-                    Activity::playing("github.com/tofuri")
-                }
+            let height = match reqwest::get(format!("{}/height", self.api)).await {
+                Ok(res) => res.json::<usize>().await.unwrap().to_string(),
+                Err(_) => "?".to_string(),
             };
-            ctx.set_activity(activity).await;
+            ctx.set_activity(Activity::watching(format!("{} blocks", height))).await;
             tokio::time::sleep(Duration::from_secs(10)).await;
         }
     }
