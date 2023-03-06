@@ -1,5 +1,4 @@
 use crate::commands;
-use log::info;
 use serenity::async_trait;
 use serenity::model::application::command::Command;
 use serenity::model::application::interaction::Interaction;
@@ -7,6 +6,7 @@ use serenity::model::gateway::Activity;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 use std::time::Duration;
+use tracing::info;
 pub struct Bot {
     pub api: String,
 }

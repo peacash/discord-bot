@@ -1,10 +1,10 @@
 use clap::Parser;
-use log::error;
 use serenity::prelude::GatewayIntents;
 use serenity::Client;
 use tofuri_bot::bot::Bot;
 use tofuri_bot::Args;
 use tofuri_core::*;
+use tracing::error;
 #[tokio::main]
 async fn main() {
     let mut args = Args::parse();

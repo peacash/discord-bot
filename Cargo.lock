@@ -1326,12 +1326,12 @@ name = "tofuri-bot"
 version = "0.1.0"
 dependencies = [
  "clap",
- "log",
  "reqwest",
  "serenity",
  "tofuri-api-core",
  "tofuri-core",
  "tokio",
+ "tracing",
  "tracing-subscriber",
 ]
 
