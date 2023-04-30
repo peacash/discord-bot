@@ -10,8 +10,21 @@ use serenity::model::Timestamp;
 use serenity::prelude::Context;
 use tofuri_api_core::Stake;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
-    if let CommandDataOptionValue::String(hash) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
-        let stake: Stake = reqwest::get(format!("{}/stake/{}", bot.api, hash)).await.unwrap().json().await.unwrap();
+    if let CommandDataOptionValue::String(hash) = command
+        .data
+        .options
+        .get(0)
+        .unwrap()
+        .resolved
+        .as_ref()
+        .unwrap()
+    {
+        let stake: Stake = reqwest::get(format!("{}/stake/{}", bot.api, hash))
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
         command
             .create_interaction_response(&ctx.http, |response| {
                 response
@@ -19,10 +32,23 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                     .interaction_response_data(|message| {
                         message.embed(|e| {
                             e.color(EMBED_COLOR)
-                                .timestamp(Timestamp::from_unix_timestamp(stake.timestamp.into()).unwrap())
+                                .timestamp(
+                                    Timestamp::from_unix_timestamp(stake.timestamp.into()).unwrap(),
+                                )
                                 .fields(vec![
-                                    ("Input", util::markdown_code_block("fix", &stake.input_address), false),
-                                    ("Fee", util::markdown_code_block("diff", &format!("- {}", stake.fee)), true),
+                                    (
+                                        "Input",
+                                        util::markdown_code_block("fix", &stake.input_address),
+                                        false,
+                                    ),
+                                    (
+                                        "Fee",
+                                        util::markdown_code_block(
+                                            "diff",
+                                            &format!("- {}", stake.fee),
+                                        ),
+                                        true,
+                                    ),
                                 ])
                         })
                     })
@@ -32,12 +58,15 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
     }
 }
 pub fn register(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
-    command.name("stake").description("Get stkae by hash").create_option(|option| {
-        option
-            .name("hash")
-            .description("A hash")
-            .kind(CommandOptionType::String)
-            .min_int_value(0)
-            .required(true)
-    })
+    command
+        .name("stake")
+        .description("Get stkae by hash")
+        .create_option(|option| {
+            option
+                .name("hash")
+                .description("A hash")
+                .kind(CommandOptionType::String)
+                .min_int_value(0)
+                .required(true)
+        })
 }

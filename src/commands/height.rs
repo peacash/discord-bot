@@ -6,7 +6,12 @@ use serenity::model::application::interaction::application_command::ApplicationC
 use serenity::model::application::interaction::InteractionResponseType;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
-    let height: usize = reqwest::get(format!("{}/height", bot.api)).await.unwrap().json().await.unwrap();
+    let height: usize = reqwest::get(format!("{}/height", bot.api))
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
     command
         .create_interaction_response(&ctx.http, |response| {
             response

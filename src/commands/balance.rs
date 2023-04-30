@@ -8,9 +8,27 @@ use serenity::model::application::interaction::InteractionResponseType;
 use serenity::model::prelude::command::CommandOptionType;
 use serenity::prelude::Context;
 pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteraction) {
-    if let CommandDataOptionValue::String(address) = command.data.options.get(0).unwrap().resolved.as_ref().unwrap() {
-        let balance: u128 = reqwest::get(format!("{}/balance/{}", bot.api, address)).await.unwrap().json().await.unwrap();
-        let staked: u128 = reqwest::get(format!("{}/staked/{}", bot.api, address)).await.unwrap().json().await.unwrap();
+    if let CommandDataOptionValue::String(address) = command
+        .data
+        .options
+        .get(0)
+        .unwrap()
+        .resolved
+        .as_ref()
+        .unwrap()
+    {
+        let balance: u128 = reqwest::get(format!("{}/balance/{}", bot.api, address))
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+        let staked: u128 = reqwest::get(format!("{}/staked/{}", bot.api, address))
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
         command
             .create_interaction_response(&ctx.http, |response| {
                 response
@@ -19,8 +37,16 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
                         message.embed(|e| {
                             e.color(EMBED_COLOR).fields(vec![
                                 ("Address", util::markdown_code_block("fix", address), false),
-                                ("Balance", util::markdown_code_block("diff", &format!("+ {}", balance)), true),
-                                ("Staked", util::markdown_code_block("diff", &format!("- {}", staked)), true),
+                                (
+                                    "Balance",
+                                    util::markdown_code_block("diff", &format!("+ {}", balance)),
+                                    true,
+                                ),
+                                (
+                                    "Staked",
+                                    util::markdown_code_block("diff", &format!("- {}", staked)),
+                                    true,
+                                ),
                             ])
                         })
                     })
@@ -30,12 +56,15 @@ pub async fn run(bot: &Bot, ctx: &Context, command: &ApplicationCommandInteracti
     }
 }
 pub fn register(command: &mut CreateApplicationCommand) -> &mut CreateApplicationCommand {
-    command.name("balance").description("Get balance of address").create_option(|option| {
-        option
-            .name("address")
-            .description("An address")
-            .kind(CommandOptionType::String)
-            .min_int_value(0)
-            .required(true)
-    })
+    command
+        .name("balance")
+        .description("Get balance of address")
+        .create_option(|option| {
+            option
+                .name("address")
+                .description("An address")
+                .kind(CommandOptionType::String)
+                .min_int_value(0)
+                .required(true)
+        })
 }

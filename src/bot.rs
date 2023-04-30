@@ -43,7 +43,8 @@ impl EventHandler for Bot {
                 Ok(res) => res.json::<usize>().await.unwrap().to_string(),
                 Err(_) => "?".to_string(),
             };
-            ctx.set_activity(Activity::watching(format!("{} blocks", height))).await;
+            ctx.set_activity(Activity::watching(format!("{} blocks", height)))
+                .await;
             tokio::time::sleep(Duration::from_secs(10)).await;
         }
     }
