@@ -9,7 +9,9 @@ async fn main() {
     let args = Args::parse();
     tracing_subscriber::fmt::init();
     let mut client = Client::builder(args.token, GatewayIntents::empty())
-        .event_handler(Bot { api: args.api })
+        .event_handler(Bot {
+            api: args.api.to_string(),
+        })
         .await
         .expect("Error creating client");
     if let Err(err) = client.start().await {

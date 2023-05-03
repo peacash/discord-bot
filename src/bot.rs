@@ -39,7 +39,7 @@ impl EventHandler for Bot {
         .await
         .unwrap();
         loop {
-            let height = match reqwest::get(format!("{}/height", self.api)).await {
+            let height = match reqwest::get(format!("{}height", self.api)).await {
                 Ok(res) => res.json::<usize>().await.unwrap().to_string(),
                 Err(_) => "?".to_string(),
             };
