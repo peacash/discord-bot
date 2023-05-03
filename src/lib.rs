@@ -9,7 +9,7 @@ pub const EMBED_COLOR: Color = Color::from_rgb(43, 45, 49);
 #[clap(version, about, long_about = None)]
 pub struct Args {
     /// Discord bot auth token
-    #[clap(short, long)]
+    #[clap(long, env = "TOKEN")]
     pub token: String,
 
     /// API Endpoint
