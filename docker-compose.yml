@@ -8,4 +8,5 @@ services:
     env_file:
       - .env
     environment:
+      - WITHOUT_TIME=true
       - TOKEN=${TOKEN}

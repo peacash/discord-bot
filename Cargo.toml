@@ -11,7 +11,7 @@ tofuri-core = "0.1"
 tofuri-api-core = "0.1"
 serenity = { version = "0.11", default-features = false, features = ["client", "gateway", "rustls_backend", "model"] }
 tokio = { version = "1.21.2", features = ["full"] }
-clap = { version = "3.2.6", features = ["derive", "env"] }
+clap = { version = "4.2", features = ["derive", "env"] }
 tracing = "0.1"
-tracing-subscriber = "0.3"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 reqwest = "0.11"

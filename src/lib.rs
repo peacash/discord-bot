@@ -15,4 +15,8 @@ pub struct Args {
     /// API Endpoint
     #[clap(long, env = "API", default_value = "http://localhost:2022")]
     pub api: Url,
+
+    /// Disable tracing_subscriber timestamps
+    #[clap(long, env = "WITHOUT_TIME")]
+    pub without_time: bool,
 }
